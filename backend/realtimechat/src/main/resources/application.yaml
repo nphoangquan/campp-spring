@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    default: local
+  application:
+    name: realtimechat
+  mongodb:
+    uri: mongodb://localhost:27017/realtime_chat
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            protocols: TLSv1.2
+
+app:
+  jwt:
+    secret: "CHANGE_ME_TO_A_LONG_RANDOM_SECRET_64_CHARS_MINIMUM________________"
+    accessTokenMinutes: 15
+    refreshTokenDays: 7
+
+cors:
+  allowedOrigins: "http://localhost:5173"

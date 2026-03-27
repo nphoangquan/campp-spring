@@ -1,0 +1,561 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================
+   Discord App Layout 
+   - Flexbox with 3 columns (Icons, Context, Chat)
+========================================================== */
+.discord-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #313338;
+  color: #DBDEE1;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================
+   Column 1: Icons Sidebar
+========================================================== */
+.col-icons {
+  width: 72px;
+  min-width: 72px;
+  background-color: #1E1F22;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar for Icon Column */
+.col-icons::-webkit-scrollbar {
+  display: none;
+}
+
+/* Base Icon Button */
+.icon-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px; /* Circle initially */
+  background-color: #313338;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #DBDEE1;
+  position: relative;
+  transition: border-radius 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
+  user-select: none;
+  font-weight: 500;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.icon-btn:hover {
+  border-radius: 16px; /* Squircle */
+  background-color: #5865F2; /* Blurple */
+  color: white;
+}
+
+.icon-btn.active {
+  border-radius: 16px;
+  background-color: #5865F2;
+  color: white;
+}
+
+/* The left active line indicator */
+.icon-btn::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 0 4px 4px 0;
+  transition: height 0.2s ease, transform 0.2s ease;
+  transform: scaleY(0);
+  transform-origin: center;
+  opacity: 0;
+}
+
+.icon-btn:hover::before {
+  transform: scaleY(1);
+  height: 20px;
+  opacity: 1;
+}
+
+.icon-btn.active::before {
+  transform: scaleY(1);
+  height: 40px;
+  opacity: 1;
+}
+
+/* Specific direct messages icon color */
+.icon-btn.dm {
+  background-color: #313338;
+}
+
+/* Add Server button (+) */
+.icon-btn.add-server {
+  color: #23a559;
+  background-color: #313338;
+}
+.icon-btn.add-server:hover {
+  background-color: #23a559;
+  color: white;
+}
+.icon-btn.add-server::before {
+  display: none;
+}
+
+/* Small divider line between DM and Servers */
+.icon-divider {
+  width: 32px;
+  height: 2px;
+  background-color: #35363C;
+  border-radius: 1px;
+  margin: 2px 0;
+  flex-shrink: 0;
+}
+
+
+/* ==========================================================
+   Column 2: Context Sidebar (Channels or Friends)
+========================================================== */
+.col-context {
+  width: 240px;
+  min-width: 240px;
+  background-color: #2B2D31;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: 8px; /* Slightly rounded top left corner next to icons */
+}
+
+/* Top bar of context column */
+.context-header {
+  height: 48px;
+  min-height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #F2F3F5;
+  cursor: pointer;
+  transition: background-color 0.1s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 2px 0 rgba(0, 0, 0, 0.05); /* Match Discord's shadow under headers */
+}
+
+.context-header:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.context-content {
+  flex: 1;
+  padding: 12px 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Channels Category Title */
+.context-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #949BA4;
+  padding: 18px 8px 4px 8px; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.context-section-title:hover {
+  color: #DBDEE1;
+}
+
+/* Individual Channel/Friend Item */
+.context-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  color: #949BA4;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  margin-bottom: 2px;
+  transition: color 0.1s, background-color 0.1s;
+}
+
+.context-item:hover {
+  background-color: rgba(78, 80, 88, 0.3);
+  color: #D1D2D3;
+}
+
+.context-item.active {
+  background-color: rgba(78, 80, 88, 0.6);
+  color: #FFFFFF;
+}
+
+/* Channel hash (#) or volume icon */
+.context-item-icon {
+  margin-right: 6px;
+  color: #80848E;
+  opacity: 0.8;
+}
+
+.context-item:hover .context-item-icon {
+  color: #D1D2D3;
+  opacity: 1;
+}
+
+.context-item.active .context-item-icon {
+  color: #FFFFFF;
+  opacity: 1;
+}
+
+
+/* ==========================================================
+   Column 3: Chat Content Area
+========================================================== */
+.col-chat {
+  flex: 1;
+  background-color: #313338;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Important: prevents long content pushing sidebar width */
+}
+
+/* Header inside Chat */
+.chat-header {
+  height: 48px;
+  min-height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 2px 0 rgba(0, 0, 0, 0.05); /* Separator shadow */
+  gap: 8px;
+}
+
+.chat-header-icon {
+  color: #80848E;
+}
+
+
+/* Scrollable Message List */
+.chat-messages {
+  flex: 1;
+  padding: 16px 0 24px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Single Message Block wrapper */
+.msg-item {
+  display: flex;
+  gap: 16px;
+  padding: 2px 48px 2px 72px;  /* Huge left padding to let avatar absolute position relative */
+  position: relative;
+  margin-top: 17px;
+}
+
+.msg-item:hover {
+  background-color: rgba(2, 2, 2, 0.06);
+}
+
+.msg-avatar {
+  position: absolute;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #5865F2; /* Default avatar color */
+  flex-shrink: 0;
+  margin-top: -2px; /* Pull it slightly up to align properly with username text */
+}
+
+.msg-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.msg-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 2px;
+  line-height: 1.375rem;
+}
+
+.msg-author {
+  font-weight: 500;
+  font-size: 15px;
+  color: #F2F3F5;
+  cursor: pointer;
+}
+
+.msg-author:hover {
+  text-decoration: underline;
+}
+
+.msg-time {
+  font-size: 12px;
+  color: #949BA4;
+  font-weight: 400;
+}
+
+.msg-text {
+  color: #DBDEE1;
+  font-size: 15px;
+  line-height: 1.375rem;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* ==========================================================
+   Chat Input box area
+========================================================== */
+.chat-input-wrapper {
+  padding: 0 16px 24px 16px;
+  flex-shrink: 0;
+}
+
+.chat-input-box {
+  background-color: #383A40;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 11px 16px;
+  min-height: 44px; /* Ensure a consistent height */
+}
+
+.chat-input-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #DBDEE1;
+  font-size: 15px;
+  font-family: inherit;
+  line-height: 20px;
+}
+
+.chat-input-box input::placeholder {
+  color: #80848E; /* Subtle grey placeholder */
+  font-weight: 400;
+}
+
+/* ==========================================================
+   Global Scrollbar Restyles (Dark and Sleek)
+========================================================== */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: #2B2D31;
+}
+.col-chat *::-webkit-scrollbar-track {
+  background: #313338;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #1A1B1E;
+  border-radius: 4px;
+}
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ==========================================================
+   Modals / Dialogs
+========================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: #313338;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: modalScaleUp 0.2s ease-out;
+}
+
+@keyframes modalScaleUp {
+  from { transform: scale(0.9); }
+  to { transform: scale(1); }
+}
+
+.modal-header {
+  padding: 24px 24px 16px;
+  text-align: center;
+}
+
+.modal-title {
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.modal-sub {
+  color: #B5BAC1;
+  font-size: 16px;
+}
+
+.modal-body {
+  padding: 0 24px 24px;
+}
+
+.modal-footer {
+  background-color: #2B2D31;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Choice Buttons */
+.choice-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.choice-button {
+  background-color: #383A40;
+  border: 1px solid #1E1F22;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+
+.choice-button:hover {
+  background-color: #404249;
+}
+
+.choice-label {
+  color: #F2F3F5;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Forms */
+.form-label {
+  color: #B5BAC1;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.modal-input {
+  width: 100%;
+  background-color: #1E1F22;
+  border: none;
+  border-radius: 4px;
+  padding: 10px;
+  color: #DBDEE1;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.modal-btn-primary {
+  background-color: #5865F2;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.modal-btn-primary:hover {
+  background-color: #4752C4;
+}
+
+.modal-btn-link {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.modal-btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Copy Box */
+.copy-box {
+  display: flex;
+  gap: 1px;
+  background-color: #1E1F22;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.copy-input {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  color: #DBDEE1;
+  font-size: 16px;
+  outline: none;
+}
+
+.copy-btn {
+  background-color: #5865F2;
+  color: white;
+  border: none;
+  padding: 0 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-btn:hover {
+  background-color: #4752C4;
+}
+
